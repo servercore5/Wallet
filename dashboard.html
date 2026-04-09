@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+
+<style>
+body { margin:0; font-family: Arial; background:#f4f6f9;}
+
+header, footer {
+  background:#0a3d91;
+  color:white;
+  padding:15px;
+}
+
+header img { height:40px; }
+
+.menu {
+  position:absolute;
+  right:20px;
+  top:15px;
+}
+
+.menu button {
+  background:white;
+  border:none;
+  padding:8px;
+  cursor:pointer;
+}
+
+.dropdown {
+  display:none;
+  position:absolute;
+  right:0;
+  background:white;
+  box-shadow:0 0 10px rgba(0,0,0,0.3);
+  width:200px;
+}
+
+.dropdown div {
+  padding:10px;
+  border-bottom:1px solid #ddd;
+  cursor:pointer;
+}
+
+.dropdown div:hover { background:#eee; }
+
+.account-box {
+  margin:100px 50px;
+  padding:20px;
+  background:white;
+  width:300px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.hidden { display:none; }
+
+button {
+  padding:10px;
+  margin-top:10px;
+  background:#0a3d91;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="125.png"> Tehdhhr Rhdhdh Hdjdj
+
+  <div class="menu">
+    <button onclick="toggleMenu()">☰</button>
+    <div class="dropdown" id="menuBox">
+      <div>Profile (Edit)</div>
+      <div>Checkings</div>
+      <div>Savings</div>
+      <div>Investments</div>
+      <div>Credit Card</div>
+      <div>Home Loans</div>
+      <div>Personal Loans</div>
+      <div>Auto Loans</div>
+      <div>Premier</div>
+      <div>Education</div>
+      <div>Tools</div>
+      <div onclick="logout()">Sign Out</div>
+    </div>
+  </div>
+</header>
+
+<div class="account-box" onclick="showBalance()">
+  Account No: 120034786766
+  <div id="balance" class="hidden">$750.00</div>
+</div>
+
+<button onclick="showTransactions()">View Transactions</button>
+
+<div id="transactions" class="hidden">
+  <p>21-03-2026 | $250.00 | Case Compensation</p>
+  <p>28-03-2026 | $250.00 | Case Compensation</p>
+  <p>04-04-2026 | $250.00 | Case Compensation</p>
+</div>
+
+<button onclick="addFunds()">Add Funds</button>
+
+<div id="fundBox" class="hidden">
+  <select id="amount">
+    <option>$10,000</option>
+    <option>$30,000</option>
+    <option>$50,000</option>
+    <option>$100,000</option>
+  </select>
+
+  <br><button onclick="nextStep()">Next</button>
+</div>
+
+<div id="videos" class="hidden"></div>
+
+<footer>Secure Banking System</footer>
+
+<script>
+
+// login check
+if(localStorage.getItem("loggedIn") !== "true"){
+  window.location.href = "index.html";
+}
+
+function toggleMenu(){
+  let menu = document.getElementById("menuBox");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function logout(){
+  localStorage.removeItem("loggedIn");
+  window.location.href = "index.html";
+}
+
+function showBalance(){
+  document.getElementById("balance").classList.remove("hidden");
+}
+
+function showTransactions(){
+  document.getElementById("transactions").classList.toggle("hidden");
+}
+
+function addFunds(){
+  document.getElementById("fundBox").classList.remove("hidden");
+}
+
+function nextStep(){
+  let videos = document.getElementById("videos");
+  videos.classList.remove("hidden");
+
+  let content = "";
+  for(let i=1;i<=10;i++){
+    content += `<button onclick="startTimer(this)">▶ Video ${i}</button><br>`;
+  }
+
+  videos.innerHTML = content;
+}
+
+function startTimer(btn){
+  btn.innerHTML = "Available after 24h ⏳";
+}
+</script>
+
+</body>
+</html>
