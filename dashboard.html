@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
+<title>Ultimate Bank</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body { margin:0; font-family: Arial; background:#f4f6f9;}
+body { margin:0; font-family:Arial; background:#eef2f7; transition:0.3s;}
+.dark { background:#121212; color:white;}
 
 header, footer {
   background:#0a3d91;
@@ -16,46 +19,33 @@ header, footer {
 
 header img { height:40px; }
 
-.menu {
-  position:absolute;
-  right:20px;
-  top:15px;
-}
-
-.menu button {
-  background:white;
-  border:none;
-  padding:8px;
-  cursor:pointer;
-}
+.menu { position:absolute; right:20px; top:15px; }
 
 .dropdown {
   display:none;
   position:absolute;
   right:0;
   background:white;
-  box-shadow:0 0 10px rgba(0,0,0,0.3);
-  width:200px;
+  width:220px;
 }
 
 .dropdown div {
   padding:10px;
   border-bottom:1px solid #ddd;
+  color:black;
   cursor:pointer;
 }
 
-.dropdown div:hover { background:#eee; }
+.container { padding:20px; }
 
-.account-box {
-  margin:100px 50px;
-  padding:20px;
+.box {
   background:white;
-  width:300px;
+  padding:20px;
   border-radius:10px;
-  cursor:pointer;
+  margin:15px 0;
 }
 
-.hidden { display:none; }
+.dark .box { background:#1e1e1e; }
 
 button {
   padding:10px;
@@ -64,6 +54,78 @@ button {
   color:white;
   border:none;
   cursor:pointer;
+}
+
+#assistant {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#0a3d91;
+  color:white;
+  padding:15px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.toggle {
+  position:fixed;
+  top:20px;
+  left:20px;
+  cursor:pointer;
+}
+
+/* CARD */
+.card {
+  width:300px;
+  height:180px;
+  perspective:1000px;
+}
+
+.card-inner {
+  width:100%;
+  height:100%;
+  transition:0.6s;
+  transform-style:preserve-3d;
+}
+
+.card:hover .card-inner { transform:rotateY(180deg); }
+
+.card-front, .card-back {
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:10px;
+  padding:20px;
+  color:white;
+}
+
+.card-front { background:#0a3d91; }
+.card-back { background:#222; transform:rotateY(180deg); }
+
+/* Satellite */
+#satellite {
+  position:fixed;
+  top:50%;
+  left:-50px;
+  font-size:30px;
+  animation:fly 10s linear infinite;
+}
+
+@keyframes fly {
+  from { left:-50px; }
+  to { left:110%; }
+}
+
+/* Notification */
+#notif {
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:green;
+  color:white;
+  padding:10px;
+  display:none;
 }
 </style>
 </head>
@@ -76,96 +138,213 @@ button {
   <div class="menu">
     <button onclick="toggleMenu()">☰</button>
     <div class="dropdown" id="menuBox">
-      <div>Profile (Edit)</div>
+      <div>👤 Profile</div>
       <div>Checkings</div>
       <div>Savings</div>
       <div>Investments</div>
       <div>Credit Card</div>
-      <div>Home Loans</div>
-      <div>Personal Loans</div>
-      <div>Auto Loans</div>
-      <div>Premier</div>
-      <div>Education</div>
-      <div>Tools</div>
-      <div onclick="logout()">Sign Out</div>
+      <div>Loans</div>
+      <div onclick="logout()">🚪 Sign Out</div>
     </div>
   </div>
 </header>
 
-<div class="account-box" onclick="showBalance()">
-  Account No: 120034786766
-  <div id="balance" class="hidden">$750.00</div>
+<div class="toggle" onclick="toggleDark()">🌙</div>
+<div id="satellite">🛰️💷</div>
+
+<div class="container">
+
+<!-- CARD -->
+<div class="card">
+  <div class="card-inner">
+    <div class="card-front">
+      💳 Premium Card<br><br>
+      1200 3478 6766
+    </div>
+    <div class="card-back">
+      CVV: 987<br>Exp: 12/28
+    </div>
+  </div>
 </div>
 
-<button onclick="showTransactions()">View Transactions</button>
-
-<div id="transactions" class="hidden">
-  <p>21-03-2026 | $250.00 | Case Compensation</p>
-  <p>28-03-2026 | $250.00 | Case Compensation</p>
-  <p>04-04-2026 | $250.00 | Case Compensation</p>
+<!-- ACCOUNT -->
+<div class="box" onclick="showBalance()">
+  Account: 120034786766
+  <h2 id="balance">£0</h2>
 </div>
 
-<button onclick="addFunds()">Add Funds</button>
-
-<div id="fundBox" class="hidden">
-  <select id="amount">
-    <option>$10,000</option>
-    <option>$30,000</option>
-    <option>$50,000</option>
-    <option>$100,000</option>
-  </select>
-
-  <br><button onclick="nextStep()">Next</button>
+<!-- TRANSACTIONS -->
+<div class="box">
+  <button onclick="toggleTx()">View Transactions</button>
+  <div id="tx" style="display:none;">
+    <p>21-03-2026 | £250 | Case Compensation</p>
+    <p>28-03-2026 | £250 | Case Compensation</p>
+    <p>04-04-2026 | £250 | Case Compensation</p>
+  </div>
 </div>
 
-<div id="videos" class="hidden"></div>
+<!-- CONVERTER -->
+<div class="box">
+  <h3>USD → GBP</h3>
+  <input id="usd" type="number">
+  <button onclick="convert()">Convert</button>
+  <p id="res"></p>
+</div>
 
-<footer>Secure Banking System</footer>
+<!-- CHART -->
+<div class="box">
+  <canvas id="chart"></canvas>
+</div>
+
+<!-- ADD FUNDS -->
+<div class="box">
+  <button onclick="addFunds()">Add Funds</button>
+  <div id="fundFlow"></div>
+</div>
+
+<!-- VIDEOS -->
+<div class="box">
+  <button onclick="loadVideos()">Unlock Content</button>
+  <div id="videos"></div>
+</div>
+
+<!-- FINGERPRINT -->
+<div class="box">
+  <button onclick="scanFinger()">🔐 Scan Fingerprint</button>
+  <p id="fingerStatus"></p>
+</div>
+
+<!-- BLOCKCHAIN -->
+<div class="box">
+  <h3>Blockchain Ledger</h3>
+  <div id="ledger" style="height:120px; overflow:auto;"></div>
+</div>
+
+<!-- GAMIFICATION -->
+<div class="box">
+  XP: <span id="xp">0</span> | Level: <span id="level">1</span>
+  <button onclick="gainXP()">Earn XP</button>
+</div>
+
+</div>
+
+<div id="assistant" onclick="ai()">🤖</div>
+<div id="notif">Success ✔</div>
+
+<footer>Ultimate Secure Bank</footer>
 
 <script>
 
-// login check
-if(localStorage.getItem("loggedIn") !== "true"){
-  window.location.href = "index.html";
+// LOGIN
+if(localStorage.getItem("loggedIn")!=="true"){
+  window.location.href="index.html";
 }
 
+// MENU
 function toggleMenu(){
-  let menu = document.getElementById("menuBox");
-  menu.style.display = menu.style.display === "block" ? "none" : "block";
+  let m=document.getElementById("menuBox");
+  m.style.display=m.style.display==="block"?"none":"block";
 }
 
 function logout(){
   localStorage.removeItem("loggedIn");
-  window.location.href = "index.html";
+  window.location.href="index.html";
 }
 
+// DARK
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+
+// BALANCE
 function showBalance(){
-  document.getElementById("balance").classList.remove("hidden");
+  let el=document.getElementById("balance");
+  let v=0;
+  let i=setInterval(()=>{
+    v+=25;
+    el.innerHTML="£"+v;
+    if(v>=750) clearInterval(i);
+  },50);
 }
 
-function showTransactions(){
-  document.getElementById("transactions").classList.toggle("hidden");
+// TX
+function toggleTx(){
+  let t=document.getElementById("tx");
+  t.style.display=t.style.display==="none"?"block":"none";
 }
 
+// CONVERT
+function convert(){
+  let usd=document.getElementById("usd").value;
+  document.getElementById("res").innerHTML="£"+(usd*0.79).toFixed(2);
+}
+
+// CHART
+new Chart(document.getElementById("chart"), {
+  type:'line',
+  data:{ labels:["Jan","Feb","Mar"], datasets:[{data:[100,300,750]}]}
+});
+
+// ADD FUNDS FLOW
 function addFunds(){
-  document.getElementById("fundBox").classList.remove("hidden");
+  document.getElementById("fundFlow").innerHTML=`
+    <select><option>£10,000</option><option>£50,000</option></select>
+    <button onclick="submitFunds()">Submit</button>
+  `;
 }
 
-function nextStep(){
-  let videos = document.getElementById("videos");
-  videos.classList.remove("hidden");
+function submitFunds(){
+  document.getElementById("notif").style.display="block";
+  setTimeout(()=>{document.getElementById("notif").style.display="none";},2000);
+}
 
-  let content = "";
-  for(let i=1;i<=10;i++){
-    content += `<button onclick="startTimer(this)">▶ Video ${i}</button><br>`;
+// VIDEOS
+function loadVideos(){
+  let html="";
+  for(let i=1;i<=5;i++){
+    html+=`<button onclick="this.innerHTML='Available after 24h'">▶ Video ${i}</button><br>`;
   }
-
-  videos.innerHTML = content;
+  document.getElementById("videos").innerHTML=html;
 }
 
-function startTimer(btn){
-  btn.innerHTML = "Available after 24h ⏳";
+// AI
+function ai(){
+  let q=prompt("Ask AI:");
+  alert("AI: System running smoothly.");
 }
+
+// VOICE
+function startVoice(){
+  let rec=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+  rec.onresult=e=>{
+    let cmd=e.results[0][0].transcript;
+    if(cmd.includes("balance")) showBalance();
+  };
+  rec.start();
+}
+
+// FINGERPRINT
+function scanFinger(){
+  let s=document.getElementById("fingerStatus");
+  s.innerHTML="Scanning...";
+  setTimeout(()=>{s.innerHTML="Verified ✔"; gainXP();},2000);
+}
+
+// BLOCKCHAIN
+setInterval(()=>{
+  let l=document.getElementById("ledger");
+  l.innerHTML=`<p>£${Math.random()*1000|0}</p>`+l.innerHTML;
+},2000);
+
+// XP
+let xp=0, lvl=1;
+function gainXP(){
+  xp+=10;
+  if(xp>=100){lvl++; xp=0; alert("Level Up!");}
+  document.getElementById("xp").innerText=xp;
+  document.getElementById("level").innerText=lvl;
+}
+
 </script>
 
 </body>
