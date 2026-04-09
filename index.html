@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fedral Trade Commission </title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f5f7fa;
+}
+
+header, footer {
+  background: #0a3d91;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+
+header img {
+  height: 40px;
+  vertical-align: middle;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  width: 300px;
+  text-align: center;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  padding: 10px 20px;
+  background: #0a3d91;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="125.png"> Fedral Trade Commission
+</header>
+p
+<div class="container">
+  <div class="login-box">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<footer>© FTC 2026 Secure Wallet</footer>
+
+<script>
+function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+
+  if(user === "rigby9997" && pass === "887876cool"){
+    localStorage.setItem("loggedIn", "true");
+    window.location.href = "dashboard.html";
+  } else {
+    alert("Invalid credentials");
+  }
+}
+</script>
+
+</body>
+</html>
