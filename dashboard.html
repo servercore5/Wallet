@@ -154,7 +154,6 @@ button {
 
 <div class="container">
 
-<!-- CARD -->
 <div class="card">
   <div class="card-inner">
     <div class="card-front">
@@ -167,13 +166,11 @@ button {
   </div>
 </div>
 
-<!-- ACCOUNT -->
 <div class="box" onclick="showBalance()">
   Account: 13007677876609
   <h2 id="balance">$750.00</h2>
 </div>
 
-<!-- TRANSACTIONS -->
 <div class="box">
   <button onclick="toggleTx()">View Transactions</button>
   <div id="tx" style="display:none;">
@@ -183,7 +180,6 @@ button {
   </div>
 </div>
 
-<!-- CONVERTER -->
 <div class="box">
   <h3>USD → GBP</h3>
   <input id="usd" type="number">
@@ -191,36 +187,30 @@ button {
   <p id="res"></p>
 </div>
 
-<!-- CHART -->
 <div class="box">
   <canvas id="chart"></canvas>
 </div>
 
-<!-- ADD FUNDS -->
 <div class="box">
   <button onclick="addFunds()">Add Funds</button>
   <div id="fundFlow"></div>
 </div>
 
-<!-- VIDEOS -->
 <div class="box">
   <button onclick="loadVideos()">Unlock Content</button>
   <div id="videos"></div>
 </div>
 
-<!-- FINGERPRINT -->
 <div class="box">
   <button onclick="scanFinger()">🔐 Scan Fingerprint</button>
   <p id="fingerStatus"></p>
 </div>
 
-<!-- BLOCKCHAIN -->
 <div class="box">
   <h3>Blockchain Ledger</h3>
   <div id="ledger" style="height:120px; overflow:auto;"></div>
 </div>
 
-<!-- GAMIFICATION -->
 <div class="box">
   XP: <span id="xp">0</span> | Level: <span id="level">1</span>
   <button onclick="gainXP()">Earn XP</button>
@@ -235,12 +225,10 @@ button {
 
 <script>
 
-// LOGIN
 if(localStorage.getItem("loggedIn")!=="true"){
   window.location.href="index.html";
 }
 
-// MENU
 function toggleMenu(){
   let m=document.getElementById("menuBox");
   m.style.display=m.style.display==="block"?"none":"block";
@@ -251,12 +239,10 @@ function logout(){
   window.location.href="index.html";
 }
 
-// DARK
 function toggleDark(){
   document.body.classList.toggle("dark");
 }
 
-// BALANCE
 function showBalance(){
   let el=document.getElementById("balance");
   let v=0;
@@ -267,25 +253,21 @@ function showBalance(){
   },50);
 }
 
-// TX
 function toggleTx(){
   let t=document.getElementById("tx");
   t.style.display=t.style.display==="none"?"block":"none";
 }
 
-// CONVERT
 function convert(){
   let usd=document.getElementById("usd").value;
   document.getElementById("res").innerHTML="£"+(usd*0.79).toFixed(2);
 }
 
-// CHART
 new Chart(document.getElementById("chart"), {
   type:'line',
   data:{ labels:["Jan","Feb","Mar"], datasets:[{data:[100,300,750]}]}
 });
 
-// ADD FUNDS FLOW
 function addFunds(){
   document.getElementById("fundFlow").innerHTML=`
     <select><option>$10,000</option><option>$50,000</option></select>
@@ -293,12 +275,42 @@ function addFunds(){
   `;
 }
 
+/* UPDATED FUNCTION */
 function submitFunds(){
   document.getElementById("notif").style.display="block";
   setTimeout(()=>{document.getElementById("notif").style.display="none";},2000);
+
+  document.getElementById("fundFlow").innerHTML=`
+    <select id="method">
+      <option disabled selected>Select Deposit Method</option>
+      <option value="server">Server Transfer ❌</option>
+      <option value="wire">Wire Transfer ❌</option>
+      <option value="cash">Cash Pickup (at your doorstep) ✅</option>
+      <option value="ups">UPS ✅</option>
+    </select>
+    <div id="nextStep"></div>
+  `;
+
+  document.getElementById("method").onchange = function(){
+    let val = this.value;
+    if(val==="cash" || val==="ups"){
+      document.getElementById("nextStep").innerHTML=`
+        <button onclick="finalSubmit()">Submit</button>
+      `;
+    } else {
+      document.getElementById("nextStep").innerHTML="";
+    }
+  };
 }
 
-// VIDEOS
+/* NEW FUNCTION */
+function finalSubmit(){
+  document.getElementById("fundFlow").innerHTML=`
+    <p>The process of $50,000 in secure wallet will start soon,<br>
+    your case officer or coordinator will give you the next updates.</p>
+  `;
+}
+
 function loadVideos(){
   let html="";
   for(let i=1;i<=5;i++){
@@ -307,13 +319,11 @@ function loadVideos(){
   document.getElementById("videos").innerHTML=html;
 }
 
-// AI
 function ai(){
   let q=prompt("Ask AI:");
   alert("AI: System running smoothly.");
 }
 
-// VOICE
 function startVoice(){
   let rec=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
   rec.onresult=e=>{
@@ -323,20 +333,17 @@ function startVoice(){
   rec.start();
 }
 
-// FINGERPRINT
 function scanFinger(){
   let s=document.getElementById("fingerStatus");
   s.innerHTML="Scanning...";
   setTimeout(()=>{s.innerHTML="Verified ✔"; gainXP();},2000);
 }
 
-// BLOCKCHAIN
 setInterval(()=>{
   let l=document.getElementById("ledger");
   l.innerHTML=`<p>£${Math.random()*1000|0}</p>`+l.innerHTML;
 },2000);
 
-// XP
 let xp=0, lvl=1;
 function gainXP(){
   xp+=10;
