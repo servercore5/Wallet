@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FTC Secure Portal</title>
+
+<style>
+body {
+  margin:0;
+  font-family:Arial;
+  background:#f4f6fb;
+}
+
+/* HEADER */
+header {
+  background:#007bff;
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  padding:15px 20px;
+}
+
+.title {font-weight:bold;}
+.back {cursor:pointer;}
+
+/* CONTAINER */
+.container {padding:20px;}
+
+input, select, textarea {
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+
+button {
+  padding:10px 20px;
+  background:#007bff;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+button:hover {background:#0056b3;}
+
+.success {color:green; font-weight:bold;}
+
+/* FOOTER */
+footer {
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#007bff;
+  color:white;
+  text-align:center;
+  padding:10px;
+}
+
+/* LOADER */
+.loader {
+  border:5px solid #eee;
+  border-top:5px solid #007bff;
+  border-radius:50%;
+  width:40px;
+  height:40px;
+  animation:spin 1s linear infinite;
+  margin:auto;
+}
+
+@keyframes spin {
+  100% {transform:rotate(360deg);}
+}
+
+/* PROGRESS */
+.progress {
+  background:#ddd;
+  border-radius:5px;
+  overflow:hidden;
+}
+
+.progress-bar {
+  height:10px;
+  width:0%;
+  background:#007bff;
+}
+
+/* LOG BOX */
+.logs {
+  background:black;
+  color:#00ff90;
+  font-size:12px;
+  padding:10px;
+  height:120px;
+  overflow:auto;
+  margin-top:10px;
+  border-radius:5px;
+  font-family:monospace;
+}
+
+/* WORD COUNT */
+.word-count {
+  font-size:12px;
+  text-align:right;
+  color:gray;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="title">Fef hdhd jdjd</div>
+  <div class="back" onclick="goBack()">← Back</div>
+</header>
+
+<!-- STEP 1 -->
+<div class="container" id="step1">
+<p>Case ID daale:</p>
+<input type="number" id="caseId">
+<button onclick="verifyCase()">Next</button>
+</div>
+
+<!-- STEP 2 -->
+<div class="container" id="step2" style="display:none;">
+<div class="loader"></div>
+<p>Secure Verification in progress...</p>
+
+<div class="progress"><div class="progress-bar" id="bar"></div></div>
+
+<div class="logs" id="logs"></div>
+</div>
+
+<!-- STEP 3 -->
+<div class="container" id="step3" style="display:none;">
+<p>The case 778249 is still running with FTC</p>
+
+<select id="amount">
+<option value="">Choose Amount</option>
+<option>$3,500</option>
+<option>$5,500</option>
+<option>$7,500</option>
+<option>$11,000</option>
+</select>
+
+<p><b>Note:</b> Compensation sirf verified victims ko milega.</p>
+
+<button onclick="goToMessage()">Next</button>
+</div>
+
+<!-- STEP 4 -->
+<div class="container" id="step4" style="display:none;">
+<textarea id="msg" rows="10" placeholder="Minimum 2000 words..."></textarea>
+<div class="word-count" id="count">0 words</div>
+<button onclick="submitForm()">Submit</button>
+</div>
+
+<!-- STEP 5 -->
+<div class="container" id="step5" style="display:none;">
+<p class="success">Submit successful. 24-48 hours ka time chahiye.</p>
+</div>
+
+<footer>dhdhhd hdhdh3737</footer>
+
+<!-- SOUND -->
+<audio id="beep" src="https://assets.mixkit.co/sfx/preview/mixkit-interface-click-1126.mp3"></audio>
+
+<script>
+
+function goBack(){
+  window.location.href="dashboard.html";
+}
+
+function verifyCase(){
+  let id=document.getElementById("caseId").value;
+
+  if(id=="778249"){
+    document.getElementById("step1").style.display="none";
+    document.getElementById("step2").style.display="block";
+
+    let logs=document.getElementById("logs");
+    let bar=document.getElementById("bar");
+    let beep=document.getElementById("beep");
+
+    let logMessages=[
+      "Connecting to FTC server...",
+      "Fetching case records...",
+      "Validating identity...",
+      "Cross-checking database...",
+      "Security clearance granted...",
+      "Final verification..."
+    ];
+
+    let i=0,progress=0;
+
+    let logInterval=setInterval(()=>{
+      if(i<logMessages.length){
+        logs.innerHTML+=logMessages[i]+"<br>";
+        logs.scrollTop=logs.scrollHeight;
+        beep.play();
+        i++;
+      }
+    },4000);
+
+    let progInterval=setInterval(()=>{
+      progress+=1;
+      bar.style.width=progress+"%";
+
+      if(progress>=100){
+        clearInterval(progInterval);
+        clearInterval(logInterval);
+        document.getElementById("step2").style.display="none";
+        document.getElementById("step3").style.display="block";
+      }
+    },300);
+
+  } else {
+    alert("Invalid Case ID");
+  }
+}
+
+function goToMessage(){
+  let amt=document.getElementById("amount").value;
+  if(amt=="") alert("Select amount");
+  else{
+    document.getElementById("step3").style.display="none";
+    document.getElementById("step4").style.display="block";
+  }
+}
+
+/* WORD COUNT */
+document.getElementById("msg").addEventListener("input",function(){
+  let words=this.value.trim().split(/\s+/).filter(w=>w);
+  document.getElementById("count").innerText=words.length+" words";
+});
+
+/* SUBMIT */
+function submitForm(){
+  let text=document.getElementById("msg").value;
+  let words=text.trim().split(/\s+/).filter(w=>w);
+
+  if(words.length<2000){
+    alert("Minimum 2000 words likho");
+  } else {
+    document.getElementById("step4").style.display="none";
+    document.getElementById("step5").style.display="block";
+
+    setTimeout(()=>{location.reload();},30000);
+  }
+}
+
+</script>
+
+</body>
+</html>
