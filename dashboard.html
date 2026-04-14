@@ -48,12 +48,12 @@ backface-visibility:hidden;border-radius:10px;padding:20px;color:white;
 <div class="menu">
 <button onclick="toggleMenu()">☰</button>
 <div class="dropdown" id="menuBox">
-<div>👤 Profile</div>
-<div>Checkings</div>
-<div>Savings</div>
-<div>Investments</div>
-<div>Credit Card</div>
-<div>compensation</div>
+<div onclick="openPage('profile')">👤 Profile</div>
+<div onclick="openPage('checkings')">Checkings</div>
+<div onclick="openPage('savings')">Savings</div>
+<div onclick="openPage('investments')">Investments</div>
+<div onclick="openPage('card')">Credit Card</div>
+<div onclick="openPage('compensation')">compensation</div>
 <div onclick="logout()">🚪 Sign Out</div>
 </div>
 </div>
@@ -270,6 +270,15 @@ t.style.display=t.style.display==="none"?"block":"none";
 }
 
 renderTx(transactions);
+  renderTx(transactions);
+
+// 👇 YAHAN paste kar
+function openPage(page){
+alert(page + " page opened");
+
+// future redirect
+// window.location.href = page + ".html";
+}
 
 </script>
 
