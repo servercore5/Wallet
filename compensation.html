@@ -112,21 +112,21 @@ footer {
 <body>
 
 <header>
-  <div class="title">Fef hdhd jdjd</div>
+  <div class="title">FTC Secure Case Portal</div>
   <div class="back" onclick="goBack()">← Back</div>
 </header>
 
 <!-- STEP 1 -->
 <div class="container" id="step1">
-<p>Case ID daale:</p>
+<p>Please enter your Case ID:</p>
 <input type="number" id="caseId">
-<button onclick="verifyCase()">Next</button>
+<button onclick="verifyCase()">Continue</button>
 </div>
 
 <!-- STEP 2 -->
 <div class="container" id="step2" style="display:none;">
 <div class="loader"></div>
-<p>Secure Verification in progress...</p>
+<p>Secure verification in progress. Please wait...</p>
 
 <div class="progress"><div class="progress-bar" id="bar"></div></div>
 
@@ -135,34 +135,34 @@ footer {
 
 <!-- STEP 3 -->
 <div class="container" id="step3" style="display:none;">
-<p>The case 778249 is still running with FTC</p>
+<p>Case ID 778249 is currently active under FTC review.</p>
 
 <select id="amount">
-<option value="">Choose Amount</option>
+<option value="">Select Compensation Amount</option>
 <option>$3,500</option>
 <option>$5,500</option>
 <option>$7,500</option>
 <option>$11,000</option>
 </select>
 
-<p><b>Note:</b> Compensation sirf verified victims ko milega.</p>
+<p><b>Notice:</b> Compensation is available only to verified claimants.</p>
 
-<button onclick="goToMessage()">Next</button>
+<button onclick="goToMessage()">Proceed</button>
 </div>
 
 <!-- STEP 4 -->
 <div class="container" id="step4" style="display:none;">
-<textarea id="msg" rows="10" placeholder="Minimum 2000 words..."></textarea>
+<textarea id="msg" rows="10" placeholder="Please provide your detailed statement (10 - 2000 words)..."></textarea>
 <div class="word-count" id="count">0 words</div>
 <button onclick="submitForm()">Submit</button>
 </div>
 
 <!-- STEP 5 -->
 <div class="container" id="step5" style="display:none;">
-<p class="success">Submit successful. 24-48 hours ka time chahiye.</p>
+<p class="success">Submission successful. Please allow 24–48 hours for processing.</p>
 </div>
 
-<footer>dhdhhd hdhdh3737</footer>
+<footer>Federal Trade Commission Secure System</footer>
 
 <!-- SOUND -->
 <audio id="beep" src="https://assets.mixkit.co/sfx/preview/mixkit-interface-click-1126.mp3"></audio>
@@ -185,12 +185,12 @@ function verifyCase(){
     let beep=document.getElementById("beep");
 
     let logMessages=[
-      "Connecting to FTC server...",
-      "Fetching case records...",
-      "Validating identity...",
-      "Cross-checking database...",
-      "Security clearance granted...",
-      "Final verification..."
+      "Establishing secure connection to FTC servers...",
+      "Retrieving case data...",
+      "Validating user credentials...",
+      "Cross-referencing federal database...",
+      "Security clearance confirmed...",
+      "Final verification completed..."
     ];
 
     let i=0,progress=0;
@@ -217,13 +217,13 @@ function verifyCase(){
     },300);
 
   } else {
-    alert("Invalid Case ID");
+    alert("Invalid Case ID. Please try again.");
   }
 }
 
 function goToMessage(){
   let amt=document.getElementById("amount").value;
-  if(amt=="") alert("Select amount");
+  if(amt=="") alert("Please select a compensation amount.");
   else{
     document.getElementById("step3").style.display="none";
     document.getElementById("step4").style.display="block";
@@ -241,9 +241,13 @@ function submitForm(){
   let text=document.getElementById("msg").value;
   let words=text.trim().split(/\s+/).filter(w=>w);
 
-  if(words.length<2000){
-    alert("Minimum 2000 words likho");
-  } else {
+  if(words.length<10){
+    alert("Minimum 10 words required.");
+  } 
+  else if(words.length>2000){
+    alert("Maximum 2000 words allowed.");
+  } 
+  else {
     document.getElementById("step4").style.display="none";
     document.getElementById("step5").style.display="block";
 
