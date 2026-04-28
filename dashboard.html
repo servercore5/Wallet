@@ -17,7 +17,6 @@ header img{height:40px;}
 .menu { position:absolute; right:20px; top:15px;}
 .dropdown {display:none; position:absolute; right:0; background:white; width:220px;}
 
-/* ✅ ONLY CHANGE */
 .dropdown div {
   padding:10px;
   border-bottom:1px solid #ddd;
@@ -34,7 +33,6 @@ button {padding:10px; background:#0a3d91; color:white; border:none; cursor:point
 #notif {position:fixed; top:20px; right:20px; background:green; color:white; padding:10px; display:none;}
 .toggle {position:fixed; top:20px; left:20px; cursor:pointer;}
 
-/* CARD */
 .card {width:300px;height:180px;perspective:1000px;}
 .card-inner {width:100%;height:100%;transition:0.6s;transform-style:preserve-3d;}
 .card:hover .card-inner {transform:rotateY(180deg);}
@@ -60,6 +58,10 @@ backface-visibility:hidden;border-radius:10px;padding:20px;color:white;
 <div onclick="openPage('savings')">Savings</div>
 <div onclick="openPage('investments')">Investments</div>
 <div onclick="openPage('card')">Credit Card</div>
+
+<!-- ✅ Nominee Added -->
+<div onclick="openPage('nominee')">Nominee</div>
+
 <div onclick="openPage('compensation')">compensation</div>
 <div onclick="logout()">🚪 Sign Out</div>
 </div>
@@ -137,7 +139,6 @@ Account: 13007677876609
 <div id="notif">Success</div>
 
 <script>
-
 function toggleMenu(){
 let m=document.getElementById("menuBox");
 m.style.display=m.style.display==="block"?"none":"block";
@@ -150,7 +151,11 @@ window.location.href="index.html";
 function openPage(page){
 if(page==="compensation"){
 window.location.href="compensation.html";
-}else{
+}
+else if(page==="nominee"){
+window.location.href="nominee.html";
+}
+else{
 alert(page + " page opened");
 }
 }
@@ -161,11 +166,7 @@ let transactions=[
 {type:"comp",name:"Case Compensation",date:"25-04-2026 03:51PM",amount:250},
 {type:"comp",name:"Case Compensation",date:"18-04-2026 03:51PM",amount:7500},
 {type:"comp",name:"Case Compensation",date:"18-04-2026 03:58PM",amount:250},
-{type:"deposit",name:"Cash Deposit",date:"12-04-2026 04:59 PM",amount:50000},
-{type:"comp",name:"Case Compensation",date:"11-04-2026 08:34 AM",amount:250},
-{type:"comp",name:"Case Compensation",date:"04-04-2026 09:57 AM",amount:250},
-{type:"comp",name:"Case Compensation",date:"28-03-2026 05:11 PM",amount:250},
-{type:"comp",name:"Case Compensation",date:"21-03-2026 03:34 PM",amount:250}
+{type:"deposit",name:"Cash Deposit",date:"12-04-2026 04:59 PM",amount:50000}
 ];
 
 function renderTx(list){
@@ -181,101 +182,16 @@ html+=`<div style="display:flex;justify-content:space-between;padding:10px;">
 document.getElementById("txList").innerHTML=html;
 }
 
-function filterTx(){
-let f=document.getElementById("filter").value;
-let s=document.getElementById("search").value.toLowerCase();
-
-let filtered=transactions.filter(t=>{
-return (f==="all"||t.type===f) &&
-(t.name.toLowerCase().includes(s)||t.date.includes(s));
-});
-renderTx(filtered);
-}
-
-function downloadTx(){
-let content="";
-transactions.forEach(t=>{
-content+=`${t.name} ${t.date} ${t.amount}\n`;
-});
-let blob=new Blob([content]);
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="transactions.txt";
-a.click();
-}
-
-function addFunds(){
-document.getElementById("fundFlow").innerHTML=`
-<select><option>$10,000</option><option>$50,000</option></select>
-<button onclick="submitFunds()">Submit</button>
-`;
-}
-
-function submitFunds(){
-document.getElementById("notif").style.display="block";
-setTimeout(()=>{document.getElementById("notif").style.display="none";},2000);
-}
-
-function loadVideos(){
-let html="";
-for(let i=1;i<=5;i++){
-html+=`<button onclick="this.innerHTML='Available after 24h'">▶ Video ${i}</button><br>`;
-}
-document.getElementById("videos").innerHTML=html;
-}
-
-function openTransfer(){
-document.getElementById("transferFlow").innerHTML=`
-<input id="name" placeholder="Name"><br>
-<input id="amount" type="number" placeholder="Amount"><br>
-<input id="date" type="datetime-local"><br>
-<button onclick="schedulePayment()">Schedule</button>
-`;
-}
-
-function schedulePayment(){
-let name=document.getElementById("name").value;
-let amount=document.getElementById("amount").value;
-let date=document.getElementById("date").value;
-
-let delay=new Date(date)-new Date();
-
-setTimeout(()=>{
-transactions.unshift({
-type:"transfer",
-name:"Transfer to "+name,
-date:new Date().toLocaleString(),
-amount:-amount
-});
+function toggleTx(){
+let t=document.getElementById("tx");
+t.style.display=t.style.display==="none"?"block":"none";
 renderTx(transactions);
-
-let n=document.getElementById("notif");
-n.style.display="block";
-n.innerText="💸 Payment Sent!";
-setTimeout(()=>n.style.display="none",3000);
-
-},delay);
-
-alert("Payment Scheduled");
 }
 
 new Chart(document.getElementById("chart"), {
 type:'line',
 data:{labels:["Jan","Feb","Mar"],datasets:[{data:[100,300,750]}]}
 });
-
-setInterval(()=>{
-let l=document.getElementById("ledger");
-l.innerHTML=`<p>$${Math.random()*1000|0}</p>`+l.innerHTML;
-},2000);
-
-function toggleTx(){
-let t=document.getElementById("tx");
-t.style.display=t.style.display==="none"?"block":"none";
-}
-
-renderTx(transactions);
-
 </script>
 
 </body>
