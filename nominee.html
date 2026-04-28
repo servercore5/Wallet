@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Nominees of This Account</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body{
+            background:#f4f7fb;
+        }
+
+        header{
+            background:#0b5ed7;
+            color:white;
+            padding:16px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-left{
+            display:flex;
+            align-items:center;
+            gap:18px;
+        }
+
+        header img{
+            height:48px;
+        }
+
+        header h1{
+            font-size:22px;
+            font-weight:600;
+            letter-spacing:0.4px;
+        }
+
+        .back-btn{
+            background:white;
+            color:#0b5ed7;
+            padding:9px 18px;
+            border-radius:5px;
+            text-decoration:none;
+            font-weight:600;
+            border:2px solid white;
+            transition:0.25s;
+        }
+
+        .back-btn:hover{
+            background:#eaf2ff;
+        }
+
+        .wrapper{
+            max-width:950px;
+            margin:60px auto;
+            padding:0 20px;
+        }
+
+        .card{
+            background:white;
+            border-radius:8px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+            padding:40px 45px;
+            border:1px solid #e3e8f0;
+        }
+
+        .card-title{
+            font-size:21px;
+            color:#0b5ed7;
+            font-weight:600;
+            margin-bottom:30px;
+            border-bottom:2px solid #e9eef6;
+            padding-bottom:12px;
+        }
+
+        .info-grid{
+            display:grid;
+            grid-template-columns:260px 1fr;
+            row-gap:18px;
+            column-gap:10px;
+            font-size:16px;
+        }
+
+        .label{
+            font-weight:600;
+            color:#333;
+        }
+
+        .value{
+            color:#555;
+        }
+
+        .authority-box{
+            margin-top:30px;
+            background:#f8fbff;
+            padding:25px 30px;
+            border-radius:6px;
+            border:1px solid #d9e6ff;
+        }
+
+        .authority-box h3{
+            color:#0b5ed7;
+            margin-bottom:15px;
+            font-size:17px;
+        }
+
+        .authority-box ul{
+            padding-left:20px;
+            line-height:1.9;
+            color:#444;
+        }
+
+        footer{
+            margin-top:80px;
+            height:65px;
+            background:#0b5ed7;
+        }
+
+        @media(max-width:768px){
+            .info-grid{
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-left">
+        <img src="125.png" alt="Logo">
+        <h1>Nominees of This Account</h1>
+    </div>
+    <a href="dashboard.html" class="back-btn">Back</a>
+</header>
+
+<div class="wrapper">
+    <div class="card">
+        <div class="card-title">Registered Nominee Details</div>
+
+        <div class="info-grid">
+            <div class="label">Nominee Name</div>
+            <div class="value">Tina Welsh</div>
+
+            <div class="label">Contact Number</div>
+            <div class="value">+1 215-253-9140</div>
+
+            <div class="label">Residential Address</div>
+            <div class="value">128 Hawthorne Avenue, New Jersey, ZIP Code 08033</div>
+
+            <div class="label">Relationship to Account Holder</div>
+            <div class="value">Daughter</div>
+
+            <div class="label">Authority Status</div>
+            <div class="value">Full access and control over this account’s funds</div>
+        </div>
+
+        <div class="authority-box">
+            <h3>Granted Nominee Authorities</h3>
+            <ul>
+                <li>Access to complete account balances, history, and statements</li>
+                <li>Authorization to initiate fund transfers and withdrawals</li>
+                <li>Permission to communicate with financial institutions and authorities</li>
+                <li>Right to operate and manage financial activities on behalf of the account holder</li>
+                <li>Eligibility to claim settlements, benefits, or associated funds</li>
+                <li>Legal operational authority during emergency, incapacity, or absence</li>
+                <li>All standard nominee rights as per applicable financial regulations</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<footer></footer>
+
+</body>
+</html>
